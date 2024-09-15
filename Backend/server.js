@@ -4,6 +4,7 @@ import session from 'express-session';
 import passport from './config/passportconfig.js';
 import authRouter from './routes/authRoutes.js'
 import blogRouter from './routes/blogRoutes.js';
+import userRouter from './routes/userRoutes.js';
 
 dotenv.config();
 
@@ -27,6 +28,7 @@ app.use(passport.session());
 
 app.use('/auth' , authRouter);
 app.use('/blog' , blogRouter);
+app.use('/user' , userRouter);
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
