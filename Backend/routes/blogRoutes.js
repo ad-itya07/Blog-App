@@ -1,15 +1,14 @@
 import express from "express";
-import bcrypt from "bcrypt";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 const blogRouter = express.Router();
 
 blogRouter.get("/", async (req, res) => {
   if (req.isAuthenticated()) {
-    res.send("Your Profile Page!");
+    res.send("Your Blog Dashboard!");
   } else {
-    res.send("No Access!");
+    return res.status(401).json({ message: "Unauthorized." });
   }
 });
 
@@ -49,7 +48,7 @@ blogRouter.post("/all-posts", async (req, res) => {
       });
     }
   } else {
-    res.send("No Access");
+    return res.status(401).json({ message: "Unauthorized." });
   }
 });
 
@@ -89,8 +88,12 @@ blogRouter.post("/create-post", async (req, res) => {
       });
     }
   } else {
-    res.send("No Access!");
+    return res.status(401).json({ message: "Unauthorized." });
   }
 });
 
+// blogRouter.put("/update-post/:id" , async (req,res) => {
+//   const { postId } = req.params;
+
+// });
 export default blogRouter;
