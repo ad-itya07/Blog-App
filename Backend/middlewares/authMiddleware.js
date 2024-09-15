@@ -1,7 +1,7 @@
 import passport from 'passport';
 
 export const loginAuthenticate = passport.authenticate("local" , {
-    successRedirect: '/auth/home',
+    successRedirect: '/auth/profile',
     failureRedirect: '/login',
     failureMessage: 'Authentication failed!',
 });
