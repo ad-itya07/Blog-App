@@ -45,19 +45,19 @@ authRouter.post("/sign-up", async (req, res) => {
         },
       });
     } catch (err) {
-      res.status(500).res.status(500).json({
+      return res.status(500).res.status(500).json({
         message: "Erron Updating db",
         success: false,
         error: err,
       });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "User registered successfully!",
       success: true,
     });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       message: "Signup failed!",
       success: false,
       error: err,
@@ -69,9 +69,9 @@ authRouter.post("/login", loginAuthenticate);
 
 authRouter.get("/profile" , (req,res) => {
   if (req.isAuthenticated()) {
-    res.redirect('/blog');
+    res.redirect('/user');
   } else {
-    res.send("Error in authenticating user!");
+    res.status(401).json({ message: "Unauthorized." });
   }
 });
 
