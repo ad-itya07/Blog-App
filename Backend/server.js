@@ -5,13 +5,7 @@ import passport from './config/passportconfig.js';
 import authRouter from './routes/authRoutes.js'
 import blogRouter from './routes/blogRoutes.js';
 import userRouter from './routes/userRoutes.js';
-import { v2 as cloudinary } from 'cloudinary';
-
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,   
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-});
+import cloudinary from './config/cloudinaryConfig.js';
 
 dotenv.config();
 
