@@ -1,78 +1,11 @@
 import express from "express";
-import bcrypt from "bcrypt";
-import { PrismaClient } from "@prisma/client";
+import authController from "../controllers/authController.js";
 import { loginAuthenticate } from "../middlewares/authMiddleware.js";
 
-const prisma = new PrismaClient();
 const authRouter = express.Router();
 
-authRouter.post("/sign-up", async (req, res) => {
-  const { username, password } = req.body;
-
-  try {
-    if (!username || !password) {
-      return res.status(400).json({
-        message: "please fill all fields",
-        success: false,
-      });
-    }
-
-    const isFound = await prisma.user.findUnique({
-      where: { user_name: username },
-    });
-    if (isFound) {
-      return res.status(400).json({
-        message: "User exist!",
-        success: false,
-      });
-    }
-
-    let hashedPassword;
-    try {
-      hashedPassword = await bcrypt.hash(password, 10);
-    } catch (err) {
-      return res.status(500).json({
-        message: "Error Hashing",
-        success: false,
-        error: err,
-      });
-    }
-    try {
-      await prisma.user.create({
-        data: {
-          user_name: username,
-          user_password: hashedPassword,
-        },
-      });
-    } catch (err) {
-      return res.status(500).res.status(500).json({
-        message: "Erron Updating db",
-        success: false,
-        error: err,
-      });
-    }
-
-    return res.status(200).json({
-      message: "User registered successfully!",
-      success: true,
-    });
-  } catch (err) {
-    return res.status(500).json({
-      message: "Signup failed!",
-      success: false,
-      error: err,
-    });
-  }
-});
-
+authRouter.post("/sign-up", authController.signUp);
 authRouter.post("/login", loginAuthenticate);
-
-authRouter.get("/profile" , (req,res) => {
-  if (req.isAuthenticated()) {
-    res.redirect('/user');
-  } else {
-    res.status(401).json({ message: "Unauthorized." });
-  }
-});
+authRouter.get("/profile", authController.profile);
 
 export default authRouter;
