@@ -18,8 +18,7 @@ model User {
   user_name        String          @unique
   user_password    String
   posts            Post[]
-  user_profile_pic UserProfilePic? @relation(fields: [profile_pic_id], references: [id], onDelete: Cascade)
-  profile_pic_id   Int?            @unique
+  user_profile_pic UserProfilePic?
 }
 
 model Post {
@@ -43,5 +42,5 @@ model Image {
 model UserProfilePic {
   id   Int    @id @default(autoincrement())
   url  String
-  user User?
+  user User?  @relation(fields: [id], references: [id], onDelete: Cascade)
 }
