@@ -1,10 +1,9 @@
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
-import multer from "multer";
 import { promises as fsPromises } from "fs";
 
-export const upload = multer({ dest: "uploads/" });
+
 
 const prisma = new PrismaClient();
 
@@ -220,7 +219,7 @@ class userController {
   }
 
   async deleteUserProfilePic (req,res) {
-    
+
   }
 }
 

@@ -1,5 +1,6 @@
 import express from "express";
-import userController , {upload} from "../controllers/userController.js";
+import userController from "../controllers/userController.js";
+import { upload } from "../middlewares/fileHandlerMiddleware.js";
 
 const userRouter = express.Router();
 
