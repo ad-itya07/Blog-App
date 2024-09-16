@@ -3,8 +3,6 @@ import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import { promises as fsPromises } from "fs";
 
-
-
 const prisma = new PrismaClient();
 
 class userController {

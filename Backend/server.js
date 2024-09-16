@@ -6,6 +6,7 @@ import authRouter from './routes/authRoutes.js'
 import blogRouter from './routes/blogRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import cloudinary from './config/cloudinaryConfig.js';
+import sessionConfig from './config/sessionConfig.js';
 
 dotenv.config();
 
@@ -15,14 +16,7 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    cookie : {
-        expires: new Date(Date.now() + 24 * 60 * 60 * 1000)
-    }
-}));
+app.use(session(sessionConfig));
 
 app.use(passport.initialize());
 app.use(passport.session());
