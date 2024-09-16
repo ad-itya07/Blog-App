@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
+import { promises as fsPromises } from "fs";
 
 export const upload = multer({ dest: "uploads/" });
 
@@ -147,43 +148,79 @@ class userController {
 
   async updateUserProfilePic(req, res) {
     if (req.isAuthenticated()) {
-      if (!req.file) {
-        return res.status(400).json({
-          message: "No Image upload!",
-          success: false,
-        });
-      }
-
       try {
-        const result = await cloudinary.uploader.upload(req.file.path, {
-          folder: "profile_pics",
-          public_id: `${req.user.id}-profile-pic`,
-        });
+        if (!req.file) {
+          return res.status(400).json({
+            message: "No Image upload!",
+            success: false,
+          });
+        }
+
+        let result;
+        try {
+          result = await cloudinary.uploader.upload(req.file.path, {
+            folder: "profile_pics",
+            public_id: `${req.user.id}-profile-pic`,
+          });
+        } catch (err) {
+          return res.status(500).json({
+            message: "Error uploading to cloudinary!",
+            success: false,
+            error: err,
+          });
+        }
+
+        try {
+          await fsPromises.unlink(req.file.path);
+        } catch (err) {
+          return res.status(500).json({
+            message: "Error unlinking file from local-storage!",
+            success: false,
+            error: err,
+          });
+        }
+
+        try {
+          const profilePic = await prisma.userProfilePic.upsert({
+            where: {
+              userId: req.user.id,
+            },
+            update: {
+              url: result.secure_url,
+            },
+            create: {
+              userId: req.user.id,
+              url: result.secure_url,
+            },
+          });
+
+          let user = req.user;
+          return res.status(200).json({
+            message: "Profile Picture updated successfully!",
+            success: true,
+            profilePic,
+          });
+        } catch (err) {
+          return res.status(500).json({
+            message: "Error updating profile pic!",
+            success: false,
+            error: err,
+          });
+        }
       } catch (err) {
         return res.status(500).json({
-          message: "Error uploading to cloudinary!",
+          message: "Couldn't change profile pic1",
           success: false,
           error: err,
         });
       }
-
-    //   try {
-    //     const profilePic = await prisma.userProfilePic.upsert({
-    //         where: {
-    //             user : {id : req.user.id,}
-    //         },
-    //         update : {
-    //             url: result.secure_url,
-    //         },
-    //         create : {
-    //             url : result.secure_url,
-    //         }
-    //     });
-
-    //   }
     } else {
       return res.status(400).json("unAuthorised");
     }
+  }
+
+  async deleteUserProfilePic (req,res) {
+    
   }
 }
 
