@@ -7,11 +7,17 @@ import blogRouter from './routes/blogRoutes.js';
 import userRouter from './routes/userRoutes.js';
 import cloudinary from './config/cloudinaryConfig.js';
 import sessionConfig from './config/sessionConfig.js';
+import cors from 'cors';
 
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

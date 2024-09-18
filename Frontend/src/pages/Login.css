@@ -1,0 +1,50 @@
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  justify-content: center; 
+  height: 100vh; 
+  background-color: #f8f9fa; 
+}
+
+/* Form styling */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center form elements horizontally */
+  width: 100%;
+  max-width: 400px; /* Limit the form width */
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #ffffff; /* Optional: Background color for form */
+}
+
+/* Input styling */
+input {
+  padding: 10px;
+  margin: 10px 0; /* Margin top and bottom */
+  width: 100%; /* Full width of the form */
+  max-width: 300px; /* Optional: Limit the width of inputs */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Button styling */
+.login-button {
+  padding: 10px 20px;
+  background-color: #ffc107;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 5px;
+  width: 100%; /* Full width of the form */
+  max-width: 300px; /* Optional: Limit the width of the button */
+  margin-top: 10px; /* Margin top for spacing */
+}
+
+.login-button:hover {
+  background-color: #e0a800;
+}
