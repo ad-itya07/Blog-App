@@ -216,8 +216,54 @@ class userController {
     }
   }
 
-  async deleteUserProfilePic (req,res) {
+  async deleteUserProfilePic(req, res) {
+    if (req.isAuthenticated()) {
+      try {
+        const profilePicture = await prisma.userProfilePic.findUnique({
+          where: {
+            userId: req.user.id,
+          },
+        });
 
+        if (!profilePicture) {
+          return res.status(400).json({
+            message: "Profile picture not found!",
+            success: false,
+          });
+        }
+
+        const publicId = `${req.user.id}-profile-pic`;
+
+        try {
+          await cloudinary.uploader.destroy(`profile_pics/${publicId}`);
+        } catch (err) {
+          return res.status(500).json({
+            message: "Error deleting image from cloud.",
+            success: false,
+            error: err,
+          });
+        }
+
+        await prisma.userProfilePic.delete({
+          where: {
+            id: req.user.id,
+          },
+        });
+
+        return res.status(200).json({
+          message: "Profile picture deleted successfully!",
+          success: true,
+        });
+      } catch (err) {
+        return res.status(500).json({
+          message: "Error deleting image.",
+          success: false,
+          error: err,
+        });
+      }
+    } else {
+      return res.status(400).json("unAuthorised");
+    }
   }
 }
 
