@@ -1,4 +1,4 @@
-# Full-Stack Blog App
+# Full-Stack Blog App (Under Devlopment...)
 
 A full-stack blog application built with Node.js, Express, Passport.js, Bcrypt, Prisma, Cloudinary, and React.js. This project demonstrates user authentication, CRUD operations for blog posts, image uploads, and a modern front-end interface.
 
